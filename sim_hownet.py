@@ -3,7 +3,7 @@
 #####################################
 # File name : sim_hownet.py
 # Create date : 2019-08-20 16:34
-# Modified date : 2019-08-20 16:35
+# Modified date : 2020-05-21 10:42
 # Author : DARREN
 # Describe : not set
 # Email : lzygzh@126.com
@@ -18,8 +18,8 @@ class SimHownet:
         self.semantic_path = 'model/hownet.dat'
         self.semantic_dict = self.load_semanticwords()
 
-    '''加载语义词典'''
     def load_semanticwords(self):
+        '''加载语义词典'''
         semantic_dict = {}
         for line in open(self.semantic_path):
             words = [word for word in line.strip().replace(' ','>').replace('\t','>').split('>') if word !='']
@@ -28,14 +28,14 @@ class SimHownet:
             semantic_dict[word] = word_def.split(',')
         return semantic_dict
 
-    '''基于语义计算语义相似度'''
     def calculate_semantic(self, DEF1, DEF2):
+        '''基于语义计算语义相似度'''
         DEF_INTERSECTION = set(DEF1).intersection(set(DEF2))
         DEF_UNION = set(DEF1).union(set(DEF2))
         return float(len(DEF_INTERSECTION))/float(len(DEF_UNION))
 
-    '''比较两个词语之间的相似度'''
     def compute_similarity(self, word1, word2):
+        '''比较两个词语之间的相似度'''
         DEFS_word1 = self.semantic_dict.get(word1, [])
         DEFS_word2 = self.semantic_dict.get(word2, [])
         scores = [self.calculate_semantic(DEF_word1, DEF_word2) for DEF_word1 in DEFS_word1 for DEF_word2 in DEFS_word2]
@@ -44,8 +44,8 @@ class SimHownet:
         else:
             return 0
 
-    '''基于词语相似度计算句子相似度'''
     def distance(self, text1, text2):
+        '''基于词语相似度计算句子相似度'''
         words1 = [word.word for word in pseg.cut(text1) if word.flag[0] not in ['u', 'x', 'w']]
         words2 = [word.word for word in pseg.cut(text2) if word.flag[0] not in ['u', 'x', 'w']]
         score_words1 = []

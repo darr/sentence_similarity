@@ -3,7 +3,7 @@
 #####################################
 # File name : sim_vsm.py
 # Create date : 2019-08-20 16:33
-# Modified date : 2019-08-20 16:35
+# Modified date : 2020-05-21 10:43
 # Author : DARREN
 # Describe : not set
 # Email : lzygzh@126.com
@@ -17,15 +17,15 @@ import numpy as np
 
 class SimVsm:
 
-    '''比较相似度'''
     def distance(self, text1, text2):
+        '''比较相似度'''
         words1 = [word.word for word in pesg.cut(text1) if word.flag[0] not in ['u', 'x', 'w']]
         words2 = [word.word for word in pesg.cut(text2) if word.flag[0] not in ['u', 'x', 'w']]
         tfidf_reps = self.tfidf_rep([words1, words2])
         return self.cosine_sim(np.array(tfidf_reps[0]), np.array(tfidf_reps[1]))
 
-    '''对句子进行tfidf向量表示'''
     def tfidf_rep(self, sents):
+        '''对句子进行tfidf向量表示'''
         sent_list = []
         df_dict = {}
         tfidf_list = []
@@ -52,8 +52,8 @@ class SimVsm:
             tfidf_list.append(tmp)
         return tfidf_list
 
-    '''余弦相似度计算相似度'''
     def cosine_sim(self, vector1, vector2):
+        '''余弦相似度计算相似度'''
         cos1 = np.sum(vector1 * vector2)
         cos21 = np.sqrt(sum(vector1 ** 2))
         cos22 = np.sqrt(sum(vector2 ** 2))

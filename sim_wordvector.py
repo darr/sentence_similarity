@@ -3,14 +3,14 @@
 #####################################
 # File name : sim_wordvector.py
 # Create date : 2019-08-20 16:35
-# Modified date : 2019-08-20 16:36
+# Modified date : 2020-05-21 21:32
 # Author : DARREN
 # Describe : not set
 # Email : lzygzh@126.com
 #####################################
 from __future__ import division
 from __future__ import print_function
-import gensim, logging
+import gensim
 import jieba.posseg as pesg
 
 class SimWordVec:
@@ -18,15 +18,15 @@ class SimWordVec:
         self.embedding_path = 'model/word_vector.bin'
         self.model = gensim.models.KeyedVectors.load_word2vec_format(self.embedding_path, binary=False)
 
-    '''获取词向量'''
     def get_wordvector(self, word):#获取词向量
+        '''获取词向量'''
         try:
             return self.model[word]
         except:
             return np.zeros(200)
 
-    '''基于余弦相似度计算句子之间的相似度，句子向量等于字符向量求平均'''
     def similarity_cosine(self, word_list1,word_list2):#给予余弦相似度的相似度计算
+        '''基于余弦相似度计算句子之间的相似度，句子向量等于字符向量求平均'''
         vector1 = np.zeros(200)
         for word in word_list1:
             vector1 += self.get_wordvector(word)
@@ -41,8 +41,8 @@ class SimWordVec:
         similarity = cos1/float(cos21*cos22)
         return  similarity
 
-    '''计算句子相似度'''
     def distance(self, text1, text2):#相似性计算主函数
+        '''计算句子相似度'''
         word_list1=[word.word for word in pesg.cut(text1) if word.flag[0] not in ['w','x','u']]
         word_list2=[word.word for word in pesg.cut(text2) if word.flag[0] not in ['w','x','u']]
         return self.similarity_cosine(word_list1,word_list2)
@@ -53,4 +53,4 @@ def test():
     simer = SimWordVec()
     simer.distance(text1, text2)
 
-#
+test()

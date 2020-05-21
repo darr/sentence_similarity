@@ -3,7 +3,7 @@
 #####################################
 # File name : sim_cilin.py
 # Create date : 2019-08-20 16:31
-# Modified date : 2019-08-20 16:35
+# Modified date : 2020-05-21 20:46
 # Author : DARREN
 # Describe : not set
 # Email : lzygzh@126.com
@@ -20,8 +20,8 @@ class SimCilin:
         self.cilin_path = 'model/cilin.txt'
         self.sem_dict = self.load_semantic()
 
-    '''加载语义词典'''
     def load_semantic(self):
+        '''加载语义词典'''
         sem_dict = {}
         for line in codecs.open(self.cilin_path):
             line = line.strip().split(' ')
@@ -37,8 +37,8 @@ class SimCilin:
             sem_dict[word] = sem_type.split(';')
         return sem_dict
 
-    '''比较计算词语之间的相似度，取max最大值'''
     def compute_word_sim(self, word1 , word2):
+        '''比较计算词语之间的相似度，取max最大值'''
         sems_word1 = self.sem_dict.get(word1, [])
         sems_word2 = self.sem_dict.get(word2, [])
         score_list = [self.compute_sem(sem_word1, sem_word2) for sem_word1 in sems_word1 for sem_word2 in sems_word2]
@@ -47,8 +47,8 @@ class SimCilin:
         else:
             return 0
 
-    '''基于语义计算词语相似度'''
     def compute_sem(self, sem1, sem2):
+        '''基于语义计算词语相似度'''
         sem1 = [sem1[0], sem1[1], sem1[2:4], sem1[4], sem1[5:7], sem1[-1]]
         sem2 = [sem2[0], sem2[1], sem2[2:4], sem2[4], sem2[5:7], sem2[-1]]
         score = 0
@@ -62,8 +62,8 @@ class SimCilin:
                     score += 1
         return score/10
 
-    '''基于词相似度计算句子相似度'''
     def distance(self, text1, text2):
+        '''基于词相似度计算句子相似度'''
         words1 = [word.word for word in pseg.cut(text1) if word.flag[0] not in ['u', 'x', 'w']]
         words2 = [word.word for word in pseg.cut(text2) if word.flag[0] not in ['u', 'x', 'w']]
         score_words1 = []
@@ -88,4 +88,4 @@ def test():
     sim = simer.distance(text1, text2)
     print(sim)
 
-#test()
+test()
